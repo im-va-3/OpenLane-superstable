@@ -31,10 +31,11 @@ runs:
     - name: Check If Going To Push An Image To Docker
       shell: bash
       run: |
-        export PUSHING=$(ruby -e 'if ("${{ github.event_name }}" != "pull_request" && "${{ inputs.container_registry_user }}" != ""); print(1) else print(0) end')
+        export PUSHING=$(ruby -e 'if ("${{ github.event_name }}" != "pull_request" && "${{ inputs.container_registry_user }}" != "" && "${{ inputs.container_registry_password }}" != ""); print(1) else print(0) end')
         echo "PUSHING=$PUSHING" >> $GITHUB_ENV
 
     - name: Login to Container Registry
+      if: inputs.container_registry_user != '' && inputs.container_registry_password != ''
       uses: docker/login-action@v3
       with:
         registry: ${{ inputs.container_registry }}
