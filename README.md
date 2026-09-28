@@ -95,3 +95,23 @@ Older container images (downloaded from `docker.io/efabless/openlane`) were
 distributed by Efabless Corporation under the same license.
 
 Binaries in OpenLane distributions may fall under stricter open source licenses.
+
+
+## Step-by-step user guide
+
+This checkout is the legacy OpenLane 1.0.x superstable flow. The project is in maintenance mode and does not recommend this flow for new designs; use LibreLane for new work.
+
+1. **Prepare the host.** On Windows, use WSL; on macOS/Linux, install Docker or a compatible container engine, Git, Python, and GNU Make as described above.
+2. **Build the environment.** From the checkout root, run <code>make</code> and <code>make test</code>. Enter the containerized environment with <code>make mount</code>.
+3. **Run the supplied design.** In the environment, run <code>./flow.tcl -design spm</code>. Let all stages finish, then inspect the generated reports and layout under the run directory for that design.
+4. **Create a design configuration.** Copy a suitable example from [designs](designs/), point the configuration at your RTL and constraints, set the clock and PDK, and preserve a clean source snapshot for reproducibility.
+5. **Review every implementation stage.** Check synthesis, floorplan, power distribution, placement, clock-tree synthesis, routing, timing, and signoff reports. Resolve DRC/LVS/timing failures before treating the GDS output as complete.
+6. **Tune with one change at a time.** Adjust floorplan/utilization, pin placement, timing constraints, or flow variables, rerun the flow, and compare area/timing/congestion reports against the baseline.
+
+### Functionality map
+
+- Automated RTL-to-GDSII implementation built around Yosys, OpenROAD, Magic, Netgen, CVC, KLayout, and project scripts.
+- Design/PDK configuration; synthesis, floorplanning, power grid, placement, CTS, routing, timing analysis, DRC/LVS, GDS export, and run reports.
+- Reproducible container setup, regression tests, design examples, and flow-stage customization are documented in [docs](docs/) and [designs](designs/).
+- This branch preserves the legacy tapeout flow; consult the project notice above before starting a new design.
+
